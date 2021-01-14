@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { validatePost, validatePostId } = require("../middleware/middleware.js");
+const { validatePostId } = require("../middleware/middleware.js");
 
 const Posts = require("./posts-model.js");
 
@@ -37,6 +37,14 @@ router.put("/:id", validatePostId, (req, res) => {
       console.log(error);
       res.status(500).json({ message: "Problem updating the post." });
     });
+});
+
+router.use((error, req, res) => {
+  res.status(500).json({
+    info: "something horrible happened inside the posts router",
+    message: error.message,
+    stack: error.stack,
+  });
 });
 
 module.exports = router;

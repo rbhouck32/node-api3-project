@@ -72,8 +72,24 @@ router.post("/:id/posts", validateUserId, validatePost, (req, res) => {
 });
 
 router.get("/:id/posts", validateUserId, (req, res) => {
-  // do your magic!
-  // this needs a middleware to verify user id
+  Users.getUserPosts(req.params.id)
+    .then((posts) => {
+      res.status(200).json(posts);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({
+        message: "Error getting the messages for this user",
+      });
+    });
+});
+
+router.use((error, req, res, next) => {
+  res.status(500).json({
+    info: "something horrible happened inside the users router",
+    message: error.message,
+    stack: error.stack,
+  });
 });
 
 module.exports = router;
