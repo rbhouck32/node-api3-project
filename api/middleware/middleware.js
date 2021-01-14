@@ -30,7 +30,7 @@ async function validateUserId(req, res, next) {
 function validateUser(req, res, next) {
   const body = req.body;
   const name = req.body.name;
-  if (body) {
+  if (Object.keys(body).length !== 0) {
     if (name) {
       next();
     } else {
